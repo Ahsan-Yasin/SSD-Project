@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <meta name="description" content="Sign in to the StaffHub employee prototype.">
+    <title>Employee Login | StaffHub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+    <script src="js/login.js" defer></script>
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="index.html" aria-label="StaffHub home">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span>StaffHub</span>
+            </a>
+            <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"
+                aria-controls="site-nav">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a class="nav-login" href="login.html" aria-current="page">Employee Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="login-main content-width" id="main-content">
+        <section class="login-panel" aria-labelledby="login-title">
+            <div class="login-intro">
+                <p class="eyebrow">Employee access</p>
+                <h1 id="login-title">Welcome to StaffHub.</h1>
+                <p>Use your work account to continue to your employee workspace.</p>
+            </div>
+
+            <div class="prototype-notice" role="note">
+                <strong>Prototype only</strong>
+                <p>No real authentication yet. Do not enter real credentials.</p>
+            </div>
+
+            <form id="login-form" class="form-stack" novalidate>
+                <p class="form-message form-message-error" id="login-error" role="alert" hidden></p>
+                <div class="field-group">
+                    <label for="email">Work email</label>
+                    <input id="email" name="email" type="email" autocomplete="username" inputmode="email" required
+                        aria-describedby="email-error">
+                    <p class="field-error" id="email-error"></p>
+                </div>
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <div class="password-control">
+                        <input id="password" name="password" type="password" autocomplete="current-password" required
+                            aria-describedby="password-error">
+                        <button class="password-toggle" id="password-toggle" type="button" aria-label="Show password"
+                            aria-pressed="false">Show</button>
+                    </div>
+                    <p class="field-error" id="password-error"></p>
+                </div>
+                <button class="button button-primary button-wide" type="submit">Log in</button>
+            </form>
+
+            <p class="account-note">HR and Administrator staff use the same login; access depends on your account.</p>
+            <a class="text-link back-link" href="index.html">&larr; Back to home</a>
+        </section>
+        <aside class="login-aside" aria-label="Privacy reminder">
+            <span class="aside-rule" aria-hidden="true"></span>
+            <p>Your employee workspace is designed to show only your own work information.</p>
+            <small>Demo data is used in this prototype.</small>
+        </aside>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner content-width">
+            <a class="brand footer-brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span>StaffHub</span>
+            </a>
+            <p>Employee services, designed around your workday.</p>
+            <small>&copy; <span data-current-year></span> StaffHub prototype</small>
+        </div>
+    </footer>
+</body>
+
+</html>

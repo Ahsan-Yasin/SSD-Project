@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <meta name="description" content="Your StaffHub employee workspace for leave and team updates.">
+    <title>Employee Portal | StaffHub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+    <script src="js/portal.js" defer></script>
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="index.html" aria-label="StaffHub home">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span>StaffHub</span>
+            </a>
+            <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"
+                aria-controls="site-nav">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="site-nav portal-nav" id="site-nav" aria-label="Employee navigation">
+                <a href="#leave-request">Request leave</a>
+                <a href="#leave-history">Leave history</a>
+                <a href="#announcements">Announcements</a>
+                <button class="button button-quiet nav-logout" id="logout-button" type="button">Log out</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="portal-main content-width" id="main-content">
+        <section class="welcome-section" aria-labelledby="welcome-title">
+            <div>
+                <p class="eyebrow">Employee portal</p>
+                <h1 id="welcome-title">Good morning, Samira.</h1>
+                <p class="welcome-subtitle">Here is your workday overview.</p>
+            </div>
+            <dl class="employee-details">
+                <div>
+                    <dt>Department</dt>
+                    <dd>Customer Success</dd>
+                </div>
+                <div>
+                    <dt>Employee ID</dt>
+                    <dd>EMP-0042</dd>
+                </div>
+            </dl>
+        </section>
+
+        <div class="demo-banner" role="note">
+            <span class="demo-indicator" aria-hidden="true"></span>
+            Demo data only. Leave requests are not sent to an employer.
+        </div>
+
+        <section class="balance-section" aria-labelledby="balance-title">
+            <div class="section-heading compact-heading">
+                <div>
+                    <p class="eyebrow">Time away</p>
+                    <h2 id="balance-title">Your leave balance</h2>
+                </div>
+                <p class="balance-caption">Available days</p>
+            </div>
+            <div class="balance-grid">
+                <article class="balance-item balance-primary">
+                    <h3>Annual</h3>
+                    <p class="balance-value"><span>12</span> days</p>
+                    <p class="balance-detail">of 20 days per year</p>
+                </article>
+                <article class="balance-item">
+                    <h3>Sick</h3>
+                    <p class="balance-value"><span>8</span> days</p>
+                    <p class="balance-detail">of 10 days per year</p>
+                </article>
+                <article class="balance-item">
+                    <h3>Casual</h3>
+                    <p class="balance-value"><span>4</span> days</p>
+                    <p class="balance-detail">of 6 days per year</p>
+                </article>
+            </div>
+        </section>
+
+        <div class="portal-columns">
+            <section class="portal-section request-section" id="leave-request" aria-labelledby="request-title">
+                <div class="section-heading">
+                    <p class="eyebrow">Plan time away</p>
+                    <h2 id="request-title">Request leave</h2>
+                    <p>Share only what is needed to plan your absence.</p>
+                </div>
+                <form id="leave-form" class="form-stack" novalidate>
+                    <p class="form-message form-message-error" id="leave-form-error" role="alert" hidden></p>
+                    <div class="field-group">
+                        <label for="leave-type">Leave type</label>
+                        <select id="leave-type" name="leaveType" required aria-describedby="leave-type-error">
+                            <option value="">Choose a leave type</option>
+                            <option value="Annual">Annual leave</option>
+                            <option value="Sick">Sick leave</option>
+                            <option value="Casual">Casual leave</option>
+                        </select>
+                        <p class="field-error" id="leave-type-error"></p>
+                    </div>
+                    <div class="date-fields">
+                        <div class="field-group">
+                            <label for="start-date">Start date</label>
+                            <input id="start-date" name="startDate" type="date" required
+                                aria-describedby="start-date-error">
+                            <p class="field-error" id="start-date-error"></p>
+                        </div>
+                        <div class="field-group">
+                            <label for="end-date">End date</label>
+                            <input id="end-date" name="endDate" type="date" required aria-describedby="end-date-error">
+                            <p class="field-error" id="end-date-error"></p>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label for="reason">Reason <span class="label-optional">(optional)</span></label>
+                        <textarea id="reason" name="reason" rows="3" maxlength="200"
+                            aria-describedby="reason-hint reason-counter"></textarea>
+                        <div class="field-meta">
+                            <p class="field-hint" id="reason-hint">Keep it brief. Do not enter medical details or other
+                                sensitive information.</p>
+                            <p class="character-count" id="reason-counter" aria-live="polite">0 / 200</p>
+                        </div>
+                    </div>
+                    <button class="button button-primary" type="submit">Submit leave request</button>
+                </form>
+            </section>
+
+            <section class="portal-section history-section" id="leave-history" aria-labelledby="history-title">
+                <div class="section-heading">
+                    <p class="eyebrow">Your requests</p>
+                    <h2 id="history-title">Leave history</h2>
+                    <p>Review the status of your recent requests.</p>
+                </div>
+                <div class="filter-row">
+                    <label for="status-filter">Show</label>
+                    <select id="status-filter" name="statusFilter">
+                        <option value="all">All statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                <p class="visually-hidden" id="history-status" aria-live="polite"></p>
+                <ul class="leave-list" id="leave-list" aria-label="Your leave requests">
+                    <li class="leave-item" data-status="pending" data-request-id="sample-pending">
+                        <div class="leave-item-main">
+                            <div class="leave-item-heading">
+                                <h3>Annual leave</h3><span class="status-badge status-pending">Pending</span>
+                            </div>
+                            <p class="leave-dates"><time datetime="2026-10-15">15 Oct 2026</time> to <time
+                                    datetime="2026-10-16">16 Oct 2026</time></p>
+                        </div>
+                        <button class="text-button cancel-request" type="button" data-action="cancel"
+                            aria-label="Cancel pending annual leave request">Cancel request</button>
+                    </li>
+                    <li class="leave-item" data-status="approved" data-request-id="sample-approved">
+                        <div class="leave-item-main">
+                            <div class="leave-item-heading">
+                                <h3>Casual leave</h3><span class="status-badge status-approved">Approved</span>
+                            </div>
+                            <p class="leave-dates"><time datetime="2026-08-07">7 Aug 2026</time> to <time
+                                    datetime="2026-08-07">7 Aug 2026</time></p>
+                        </div>
+                    </li>
+                    <li class="leave-item" data-status="rejected" data-request-id="sample-rejected">
+                        <div class="leave-item-main">
+                            <div class="leave-item-heading">
+                                <h3>Annual leave</h3><span class="status-badge status-rejected">Rejected</span>
+                            </div>
+                            <p class="leave-dates"><time datetime="2026-07-20">20 Jul 2026</time> to <time
+                                    datetime="2026-07-21">21 Jul 2026</time></p>
+                        </div>
+                    </li>
+                </ul>
+                <p class="empty-state" id="empty-history" hidden>No requests match this status.</p>
+            </section>
+        </div>
+
+        <section class="announcement-section" id="announcements" aria-labelledby="announcements-title">
+            <div class="section-heading compact-heading">
+                <div>
+                    <p class="eyebrow">From your team</p>
+                    <h2 id="announcements-title">Announcements</h2>
+                </div>
+                <p class="balance-caption">Latest updates</p>
+            </div>
+            <div class="announcement-list">
+                <article class="announcement-row">
+                    <time datetime="2026-09-28">28 Sep 2026</time>
+                    <div>
+                        <h3>Quarterly all-hands</h3>
+                        <p>Join the company update on Thursday, 8 October at 10:00 in the main meeting room.</p>
+                    </div>
+                </article>
+                <article class="announcement-row">
+                    <time datetime="2026-09-24">24 Sep 2026</time>
+                    <div>
+                        <h3>Benefits portal maintenance</h3>
+                        <p>The benefits portal will be unavailable on Saturday, 3 October from 09:00 to 11:00.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <dialog class="confirm-dialog" id="cancel-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-message">
+        <div class="dialog-content">
+            <p class="eyebrow">Leave request</p>
+            <h2 id="dialog-title">Cancel this request?</h2>
+            <p id="dialog-message">This pending request will be removed from your prototype history.</p>
+            <div class="dialog-actions">
+                <button class="button button-secondary" id="keep-request" type="button">Keep request</button>
+                <button class="button button-danger" id="confirm-cancel" type="button">Cancel request</button>
+            </div>
+        </div>
+    </dialog>
+
+    <footer class="site-footer">
+        <div class="footer-inner content-width">
+            <a class="brand footer-brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span>StaffHub</span>
+            </a>
+            <p>Employee services, designed around your workday.</p>
+            <small>&copy; <span data-current-year></span> StaffHub prototype</small>
+        </div>
+    </footer>
+</body>
+
+</html>
