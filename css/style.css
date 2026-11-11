@@ -513,6 +513,24 @@ h3 {
     display: none;
 }
 
+.password-strength {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.password-strength[data-strength="weak"] {
+    color: var(--danger);
+}
+
+.password-strength[data-strength="moderate"] {
+    color: var(--warning);
+}
+
+.password-strength[data-strength="strong"] {
+    color: var(--success);
+}
+
 .form-message {
     margin: 0;
     padding: 10px 12px;

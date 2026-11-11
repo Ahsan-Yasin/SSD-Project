@@ -7,6 +7,7 @@ const passwordToggle = document.querySelector("#password-toggle");
 const loginError = document.querySelector("#login-error");
 const emailError = document.querySelector("#email-error");
 const passwordError = document.querySelector("#password-error");
+const passwordStrength = document.querySelector("#password-strength");
 
 if (passwordToggle && passwordInput) {
     passwordToggle.addEventListener("click", () => {
@@ -27,14 +28,32 @@ function clearLoginErrors() {
     passwordInput.removeAttribute("aria-invalid");
 }
 
-loginForm.addEventListener("input", clearLoginErrors);
+function updatePasswordStrength() {
+    if (!passwordInput.value) {
+        passwordStrength.textContent = "";
+        passwordStrength.removeAttribute("data-strength");
+        return;
+    }
+
+    const result = window.checkPasswordStrength(passwordInput.value);
+    passwordStrength.textContent = `Strength: ${result.level}. ${result.message}`;
+    passwordStrength.dataset.strength = result.level.toLowerCase();
+}
+
+loginForm.addEventListener("input", (event) => {
+    clearLoginErrors();
+    if (event.target === passwordInput) {
+        updatePasswordStrength();
+    }
+});
 
 loginForm.addEventListener("submit", (event) => {
     event.preventDefault();
     clearLoginErrors();
 
-    const validEmailFormat = emailInput.validity.valid;
-    const hasPassword = passwordInput.value.length > 0;
+    emailInput.value = emailInput.value.trim();
+    const validEmailFormat = emailInput.value.length <= 254 && emailInput.validity.valid;
+    const hasPassword = passwordInput.value.length > 0 && passwordInput.value.length <= 128;
 
     if (!validEmailFormat) {
         emailInput.setAttribute("aria-invalid", "true");
@@ -43,7 +62,9 @@ loginForm.addEventListener("submit", (event) => {
 
     if (!hasPassword) {
         passwordInput.setAttribute("aria-invalid", "true");
-        passwordError.textContent = "Enter your password.";
+        passwordError.textContent = passwordInput.value.length > 128
+            ? "Password must be 128 characters or fewer."
+            : "Enter your password.";
     }
 
     if (!validEmailFormat || !hasPassword) {

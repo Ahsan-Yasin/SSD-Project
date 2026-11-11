@@ -119,12 +119,21 @@
                     <div class="field-group">
                         <label for="reason">Reason <span class="label-optional">(optional)</span></label>
                         <textarea id="reason" name="reason" rows="3" maxlength="200"
-                            aria-describedby="reason-hint reason-counter"></textarea>
+                            aria-describedby="reason-hint reason-counter reason-error"></textarea>
                         <div class="field-meta">
                             <p class="field-hint" id="reason-hint">Keep it brief. Do not enter medical details or other
                                 sensitive information.</p>
                             <p class="character-count" id="reason-counter" aria-live="polite">0 / 200</p>
                         </div>
+                        <p class="field-error" id="reason-error"></p>
+                    </div>
+                    <div class="field-group">
+                        <label for="support-file">Supporting document <span class="label-optional">(optional)</span></label>
+                        <input id="support-file" name="supportFile" type="file" accept=".pdf,.jpg,.jpeg,.png"
+                            aria-describedby="support-file-hint support-file-status support-file-error">
+                        <p class="field-hint" id="support-file-hint">PDF, JPG, or PNG. Maximum size: 5 MB. The file is checked locally and is not uploaded.</p>
+                        <p class="field-hint" id="support-file-status" aria-live="polite"></p>
+                        <p class="field-error" id="support-file-error" role="alert"></p>
                     </div>
                     <button class="button button-primary" type="submit">Submit leave request</button>
                 </form>

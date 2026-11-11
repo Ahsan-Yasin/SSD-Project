@@ -18,7 +18,11 @@ if (!hasDemoAccess) {
     const startDate = document.querySelector("#start-date");
     const endDate = document.querySelector("#end-date");
     const reasonInput = document.querySelector("#reason");
+    const reasonError = document.querySelector("#reason-error");
     const reasonCounter = document.querySelector("#reason-counter");
+    const supportFileInput = document.querySelector("#support-file");
+    const supportFileError = document.querySelector("#support-file-error");
+    const supportFileStatus = document.querySelector("#support-file-status");
     const leaveList = document.querySelector("#leave-list");
     const statusFilter = document.querySelector("#status-filter");
     const historyStatus = document.querySelector("#history-status");
@@ -44,9 +48,22 @@ if (!hasDemoAccess) {
     logoutButton.addEventListener("click", () => {
         try {
             sessionStorage.removeItem("staffhubDemoAccess");
-        } finally {
-            window.location.assign("index.html");
+        } catch {
         }
+
+        leaveForm.reset();
+        leaveList.querySelectorAll('[data-request-id^="new-request-"]').forEach((item) => item.remove());
+        statusFilter.value = "all";
+        updateHistoryFilter();
+        reasonCounter.textContent = "0 / 200";
+        supportFileStatus.textContent = "";
+        if (cancelDialog.open) {
+            cancelDialog.close();
+        }
+        requestToCancel = null;
+        cancelButtonToRestore = null;
+        clearLeaveErrors();
+        window.location.assign("index.html");
     });
 
     function clearLeaveErrors() {
@@ -56,6 +73,40 @@ if (!hasDemoAccess) {
             document.querySelector(`#${fieldId}`).removeAttribute("aria-invalid");
             document.querySelector(`#${fieldId}-error`).textContent = "";
         });
+        reasonInput.removeAttribute("aria-invalid");
+        reasonError.textContent = "";
+        supportFileInput.removeAttribute("aria-invalid");
+        supportFileError.textContent = "";
+    }
+
+    function validateSupportFile() {
+        const file = supportFileInput.files[0];
+        if (!file) {
+            supportFileStatus.textContent = "";
+            return true;
+        }
+
+        const extension = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+        if (![".pdf", ".jpg", ".jpeg", ".png"].includes(extension)) {
+            supportFileInput.value = "";
+            supportFileInput.setAttribute("aria-invalid", "true");
+            supportFileStatus.textContent = "";
+            supportFileError.textContent = "Choose a PDF, JPG, or PNG file.";
+            return false;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            supportFileInput.value = "";
+            supportFileInput.setAttribute("aria-invalid", "true");
+            supportFileStatus.textContent = "";
+            supportFileError.textContent = "File must be 5 MB or smaller.";
+            return false;
+        }
+
+        supportFileInput.removeAttribute("aria-invalid");
+        supportFileError.textContent = "";
+        supportFileStatus.textContent = `Selected: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB).`;
+        return true;
     }
 
     function validateLeaveForm() {
@@ -94,6 +145,14 @@ if (!hasDemoAccess) {
             formError.textContent = "Keep the reason to 200 characters or fewer.";
             formError.hidden = false;
             firstInvalidField = firstInvalidField || reasonInput;
+        } else if (reasonInput.value.length > 0 && reasonInput.value.length < 3) {
+            reasonInput.setAttribute("aria-invalid", "true");
+            reasonError.textContent = "Enter at least 3 characters or leave this blank.";
+            firstInvalidField = firstInvalidField || reasonInput;
+        }
+
+        if (!validateSupportFile()) {
+            firstInvalidField = firstInvalidField || supportFileInput;
         }
 
         if (firstInvalidField) {
@@ -116,8 +175,11 @@ if (!hasDemoAccess) {
         if (event.target.matches("#reason")) {
             reasonCounter.textContent = `${reasonInput.value.length} / 200`;
             reasonInput.removeAttribute("aria-invalid");
+            reasonError.textContent = "";
         }
     });
+
+    supportFileInput.addEventListener("change", validateSupportFile);
 
     leaveForm.addEventListener("change", (event) => {
         if (event.target.matches("#leave-type, #start-date, #end-date")) {
@@ -199,6 +261,8 @@ if (!hasDemoAccess) {
 
     leaveForm.addEventListener("submit", (event) => {
         event.preventDefault();
+        reasonInput.value = reasonInput.value.trim();
+        reasonCounter.textContent = `${reasonInput.value.length} / 200`;
         if (!validateLeaveForm()) {
             return;
         }
@@ -218,6 +282,7 @@ if (!hasDemoAccess) {
         leaveForm.reset();
         endDate.min = localDateString();
         reasonCounter.textContent = "0 / 200";
+        supportFileStatus.textContent = "";
         clearLeaveErrors();
         historyStatus.textContent = "Leave request added with Pending status.";
     });
